@@ -1,0 +1,56 @@
+/*
+    This "Collection" extendes default wazuh index mappings
+    Refs: 
+      https://opensearch.org/docs/latest/api-reference/index-apis/create-index/
+      https://opensearch.org/docs/latest/im-plugin/reindex-data/
+
+    How to use:
+
+    1 - Log into Wazuh/OpenSearch/ElasticSearch
+    2 - Click on the burger and navigate to Dev Tools
+    3 - Review the settings below, once it suits your need, copy and paste on the console
+    4 - Uncomment the HTTP verb line (the first one below)
+    5 - Execute the change and check if the updates were possible
+    6 - Reindex AWS Cloud Trail Logs from ASL
+
+    Outputs: 
+
+    {
+      "acknowledged": true,
+      "shards_acknowledged": true,
+      "index": "aws-security-lake-cloudtrail"
+    }
+*/
+
+
+// PUT aws-security-lake-cloudtrail
+{
+  "settings": {
+    "index": {
+      "mapping": {
+        "total_fields": {
+          "limit": "10000"
+        }
+      },
+      "refresh_interval": "30s",
+      "number_of_shards": "3",
+      "auto_expand_replicas": "0-1"
+    }
+  }
+}
+
+//POST _reindex
+{
+  "source": {
+    "conflicts": "proceed",
+    "index": "wazuh-alerts-4.x-2023.11.12",
+    "query": {
+      "match": {
+        "data.metadata.product.name": "CloudTrail"
+      }
+    }
+  },
+  "dest": {
+    "index": "aws-security-lake-cloudtrail"
+  }
+}

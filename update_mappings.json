@@ -1,0 +1,95 @@
+
+
+/*
+    This "Collection" extendes default wazuh index mappings
+    Ref: https://opensearch.org/docs/latest/api-reference/index-apis/put-mapping/
+
+    How to use:
+
+    1 - Log into Wazuh/OpenSearch/ElasticSearch
+    2 - Click on the burger and navigate to Dev Tools
+    3 - Review the settings below, once it suits your need, copy and paste on the console
+    4 - Uncomment the HTTP verb line (the first one below)
+    5 - Execute the change and check if the updates were possible
+*/
+
+
+// PUT /wazuh-alerts-*/_mapping
+
+{
+  "properties": {
+    "unmapped": {
+      "properties": {
+        "requestParameters": {
+          "properties": {
+            "SSEApplied": {
+              "type": "keyword"
+            },
+            "Host": {
+              "type": "keyword"
+            },
+            "bucketName": {
+              "type": "keyword"
+            },
+            "key": {
+              "type": "keyword"
+            }
+          }
+        },
+        "responseElements": {
+          "properties":{
+            "x-amz-version-id": {
+              "type": "keyword"
+            },
+            "x-amz-server-side-encryption": {
+              "type": "keyword"
+            },
+            "x-amz-expiration": {
+              "type": "keyword"
+            }
+          }
+        },
+        "additionalEventData": {
+          "properties":{
+            "SignatureVersion": {
+              "type": "keyword"
+            },
+            "CipherSuite": {
+              "type": "keyword"
+            },
+            "bytesTransferredIn": {
+              "type": "long"
+            },
+            "bytesTransferredOut": {
+              "type": "long"
+            },
+            "SSEApplied": {
+              "type": "keyword"
+            },
+            "x-amz-id-2": {
+              "type": "keyword"
+            },
+            "AuthenticationMethod": {
+              "type": "keyword"
+            }
+          }
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
+        "eventType": {
+          "type": "keyword"
+        },
+        "sharedEventID": {
+          "type": "keyword"
+        },
+        "recipientAccountId": {
+          "type": "keyword"
+        },
+        "managementEvent": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
